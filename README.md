@@ -1,2 +1,1 @@
-# myelmore-smart-ai
-AI
+myelmoreai
