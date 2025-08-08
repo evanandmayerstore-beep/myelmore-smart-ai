@@ -1,0 +1,2 @@
+# myelmore-smart-ai
+AI
