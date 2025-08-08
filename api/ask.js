@@ -1,14 +1,12 @@
-// File: api/ask.js
-
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   const { prompt } = req.body;
 
   if (!prompt) {
-    return res.status(400).json({ error: 'Missing prompt in request body' });
+    return res.status(400).json({ error: "No prompt provided" });
   }
 
   try {
@@ -21,16 +19,15 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
       }),
     });
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "No response";
+    const reply = data.choices?.[0]?.message?.content;
 
-    res.status(200).json({ reply });
-  } catch (error) {
-    console.error("Error from OpenAI:", error);
-    res.status(500).json({ error: "Something went wrong" });
+    return res.status(200).json({ reply });
+  } catch (err) {
+    console.error("OpenAI API error:", err);
+    return res.status(500).json({ error: "Failed to get response from AI" });
   }
 }
